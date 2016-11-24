@@ -4,3 +4,8 @@
 /project/project/
 /project/target/
 /target/
+
+# sbt-eclipse
+/.classpath
+/.project
+/.settings
