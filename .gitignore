@@ -12,3 +12,5 @@
 
 # generated SQL
 /*.sql
+/bin/
+/repo/
