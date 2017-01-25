@@ -1,5 +1,7 @@
 package com.github.nkmrs.utils;
 
+import com.avaje.ebean.Ebean;
+import com.avaje.ebean.EbeanServer;
 import com.avaje.ebean.Query;
 import models.Example1;
 import models.UserAge;
@@ -18,25 +20,35 @@ public class QueryTextTest {
     public static void setup() {
         AgentLoader.loadAgentFromClasspath("ebean-agent", "");
 
-        createUserName("Johannes"); // id = 1
-        createUserName("Riko"); // id = 2
-        createUserName("Marry"); // id = 3
+        EbeanServer server1 = Ebean.getServer("db");
+        EbeanServer server2 = Ebean.getServer("db2");
 
-        createUserAge(15); // id = 1
-        createUserAge(16); // id = 2
-        createUserAge(17); // id = 3
+        // default server
+        createUserName("Johannes", server1); // id = 1
+        createUserName("Riko", server1); // id = 2
+        createUserName("Marry", server1); // id = 3
+        createUserAge(15, server1); // id = 1
+        createUserAge(16, server1); // id = 2
+        createUserAge(17, server1); // id = 3
+
+        // additional server
+        createUserName("Chika", server2); // id = 1
+        createUserName("Zura", server2); // id = 2
+        createUserAge(16, server2); // id = 1
+        createUserAge(15, server2); // id = 2
     }
 
-    private static void createUserName(String name) {
+
+    private static void createUserName(String name, EbeanServer server) {
         UserName n = new UserName();
         n.name = name;
-        n.save();
+        server.save(n);
     }
 
-    private static void createUserAge(Integer name) {
+    private static void createUserAge(Integer name, EbeanServer server) {
         UserAge n = new UserAge();
         n.age = name;
-        n.save();
+        server.save(n);
     }
 
     @Test
@@ -68,4 +80,13 @@ public class QueryTextTest {
         assertEquals((int) list.get(1).id, 2);
     }
 
+    @Test
+    public void additionalServer() {
+        Query<Example1> q = QueryText.get("db2").getQuery("example1", Example1.class);
+        List<Example1> list = q.where()
+                .eq("name", "Chika")
+                .findList();
+        assertEquals(list.size(), 1);
+        assertEquals((int) list.get(0).age, 16);
+    }
 }

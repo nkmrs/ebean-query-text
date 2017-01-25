@@ -41,6 +41,15 @@ public class QueryText {
         return new QueryText(Ebean.getDefaultServer(), DEFAULT_QUERY_DIR, DEFAULT_QUERY_EXT);
     }
 
+    /**
+     * getSqlQueryText new instance by any server
+     *
+     * @return new instance by any server
+     */
+    public static QueryText get(String serverName) {
+        return new QueryText(Ebean.getServer(serverName), DEFAULT_QUERY_DIR, DEFAULT_QUERY_EXT);
+    }
+
     private static Map<String, String> loadQueries(String basedir, String ext) {
         Map<String, String> map = new HashMap<>();
 
