@@ -2,7 +2,7 @@ name := """ebean-query-text"""
 
 organization := "com.github.nkmrs"
 
-version := "0.1-SNAPSHOT"
+version := "0.1.0"
 
 scalaVersion := "2.11.7"
 
