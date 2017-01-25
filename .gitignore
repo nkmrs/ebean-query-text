@@ -5,6 +5,9 @@
 /project/target/
 /target/
 
+# idea
+/.idea/
+
 # sbt-eclipse
 /.classpath
 /.project
@@ -12,5 +15,7 @@
 
 # generated SQL
 /*.sql
+
+# generated binaries
 /bin/
 /repo/
